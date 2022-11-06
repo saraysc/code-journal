@@ -67,12 +67,12 @@ function entry(object) {
   var textList = document.createElement('p');
   imageList.setAttribute('src', object.photo);
   titleList.textContent = object.title;
-  imageList.className = 'image-list';
+  imageList.className = 'image-list col-2';
   titleList.className = 'row';
   textList.textContent = object.text;
   textContent.prepend(textList);
   textContent.prepend(titleList);
-  textContent.className = 'margin-text-entry';
+  textContent.className = 'margin-text-entry col-2 col-2-second';
   newContent.prepend(textContent);
   newContent.prepend(imageList);
   newContent.className = 'row';

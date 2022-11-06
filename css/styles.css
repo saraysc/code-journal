@@ -8,25 +8,24 @@
 }
 
 .first-line {
-  width: 100%;
-  background-color: #802392;
-  color: white;
   display: flex;
+  background-color: #802392;
+  width: 100%;
+  color: white;
 }
 
 .head {
   flex-basis: 50%;
+  font-size: 16px;
+  justify-content: flex-end;
 }
 
 .header {
-  font-size: 16px;
   display: flex;
-  justify-content: flex-end;
-  margin-right: 140px;
+  margin-right: 145px;
 }
 
 .header-font {
-  text-align: right;
   margin-right: 30px;
 }
 
@@ -79,32 +78,6 @@ button {
   margin-right: 50px;
 }
 
-@media only screen and (max-width: 800px) {
-  form,
-  ul,
-  .header {
-    width: 25%;
-  }
-
-  textarea {
-    width: 300px;
-  }
-
-  .col-2-second {
-    margin-left: 70px;
-  }
-
-  input {
-    width: 300px;
-  }
-
-  .header-font {
-    display: flex;
-    margin-left: 94px;
-    width: 90px;
-  }
-}
-
 .margin-left {
   margin-left: 70px;
 }
@@ -131,15 +104,59 @@ button {
 }
 
 .image-list {
-  width: 300px;
-  object-position: left;
   margin-left: 30px;
-}
-
-.block {
-  display: block;
 }
 
 .margin-text-entry {
   margin-left: 30px;
+}
+
+@media only screen and (max-width: 800px) {
+  form,
+  ul {
+    width: 25%;
+  }
+
+  form h2 {
+    width: 200px;
+  }
+
+  .margin-button {
+    position: relative;
+    left: 50%;
+  }
+
+  textarea {
+    width: 300px;
+  }
+
+  .col-2-second {
+    margin-left: 70px;
+  }
+
+  input {
+    width: 300px;
+  }
+
+  .header-font {
+    display: flex;
+    margin-left: 94px;
+    width: 90px;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  header {
+    background-color: #802392;
+    width: 900px;
+  }
+
+  .header {
+    margin-right: 200px;
+  }
+
+  .margin-button {
+    position: relative;
+    left: 25%;
+  }
 }
