@@ -31,10 +31,7 @@ $submit.addEventListener('submit', event => {
   $secondForm.className = 'second';
   $firstForm.className = 'first hidden';
   $list.prepend(entry(obj));
-  if (data.nextEntryId > 1) {
-    $paragraph.textContent = '';
-  }
-  onClick2();
+
 });
 
 // hide the 'entries' page and show the 'new entry' page
@@ -45,6 +42,7 @@ $newButton.addEventListener('click', onClick);
 function onClick(event) {
   $secondForm.className = 'second hidden';
   $firstForm.className = 'first';
+  data.view = 'entry-form';
 }
 
 // show the 'entries' page and hide the 'new entry' page
@@ -54,7 +52,6 @@ function onClick2(event) {
   $secondForm.className = 'second';
   $firstForm.className = 'first hidden';
   data.view = 'entries';
-
 }
 
 function contentLoad(event) {
@@ -87,6 +84,7 @@ function entry(object) {
   newContent.className = 'row';
   item.prepend(newContent);
   item.className = 'entry';
-  document.addEventListener('DOMContentLoaded', contentLoad);
+  $paragraph.textContent = '';
   return item;
 }
+document.addEventListener('DOMContentLoaded', contentLoad);
