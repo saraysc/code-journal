@@ -129,6 +129,7 @@ function getObject(entryListElement) {
 
   }
 }
+
 var $firstImage = document.querySelector('.first-image');
 
 var $submit = document.querySelector('.form');
