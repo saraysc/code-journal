@@ -6,6 +6,7 @@ function preview(event) {
 
 function save(event) {
   event.preventDefault();
+
   if (data.editing === null) {
     var entryObject = {};
     entryObject.entryId = data.nextEntryId;
@@ -25,8 +26,9 @@ function save(event) {
   } else {
     entryListElement.replaceWith(renderedEntry);
   }
-
+  $titleEntry.textContent = 'New Entry';
   onClick2();
+
 }
 
 // create dom tree
@@ -94,6 +96,7 @@ function onClick2(event) {
 }
 
 function createEntry(event) {
+  $titleEntry.textContent = 'New Entry';
   $firstImage.setAttribute('src', 'images/placeholder-image-square.jpg');
   $submit.reset();
   onClick();
@@ -112,6 +115,7 @@ function editEntry(event) {
   $submit.elements.photoUrl.value = entryObject.photoUrl;
   $firstImage.setAttribute('src', entryObject.photoUrl);
   $submit.elements.notes.value = entryObject.text;
+  $titleEntry.textContent = 'Edit Entry';
 
 }
 
@@ -148,3 +152,4 @@ $entries.addEventListener('click', onClick2);
 
 var $saveButton = document.querySelector('.button-save');
 $saveButton.addEventListener('click', save);
+var $titleEntry = document.querySelector('.entry-title');
