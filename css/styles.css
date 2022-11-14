@@ -113,12 +113,37 @@ button {
 
 .image-list {
   margin-left: 30px;
+  width: 300px;
+  height: 300px;
+  object-fit: fill;
+}
+
+.text-content {
+  width: 300px;
+  margin-left: 20px;
+}
+
   width: 200px;
   object-fit: fill;
 }
 
 .margin-text-entry {
   margin-left: 30px;
+}
+
+.space-around {
+  display: flex;
+  justify-content: space-between;
+}
+
+.edit-icon {
+  color: #802392;
+  display: flex;
+  align-items: center;
+}
+
+.obj-fit {
+  object-fit: scale-down;
 }
 
 @media only screen and (max-width: 700px) {

@@ -27,22 +27,24 @@
   </header>
   <main class="container">
     <div data-view="entry-form" class="first hidden">
+      <form class="form">
+        <h2 class="entry-title">New Entry</h2>
       <form>
         <h2>New Entry</h2>
         <div class="row">
           <div class="col-2"><img class="first-image image" src="images/placeholder-image-square.jpg"></div>
           <div class="col-2 col-2-second">
             <label for="title">Title</label>
-            <input required name="name" type="text" id="title">
+            <input required="required" name="title" type="text" id="title" class="input-title">
             <label for="photo">Photo URL</label>
-            <input required class="photoUrl" name="picture" type="text" id="photo">
+            <input required="required" name="photoUrl" type="text" id="photo" class="photo">
           </div>
         </div> <!--row div-->
         <div class="row col-1">
           <label for="notes">Notes</label>
-          <textarea required rows="10" name="notes" id="notes"></textarea>
+          <textarea required="required" class="note" name="notes" rows="10" id="notes"></textarea>
 
-          <button>SAVE</button>
+          <button class="button-save">SAVE</button>
         </div>
 
       </form>
