@@ -123,6 +123,10 @@ button {
   margin-left: 20px;
 }
 
+  width: 200px;
+  object-fit: fill;
+}
+
 .margin-text-entry {
   margin-left: 30px;
 }
