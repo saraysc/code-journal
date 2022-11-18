@@ -32,3 +32,53 @@
     width: 50%;
   }
 }
+
+@media only screen and (max-width: 806px) {
+  .container {
+    max-width: 550px;
+  }
+
+  header {
+    background-color: #802392;
+    width: 900px;
+  }
+
+  .note {
+    width: 300px;
+  }
+
+  .col-2-second {
+    margin-left: 70px;
+  }
+
+  .col-2 input {
+    width: 300px;
+  }
+
+  .header-font {
+    display: flex;
+    width: 135px;
+  }
+
+  .image-list {
+    min-width: 350px;
+    max-height: 350px;
+    margin: auto;
+  }
+
+  .margin-text-entry {
+    width: 700px;
+  }
+
+  .text-paragraph {
+    width: 350px;
+  }
+
+  .margin-left {
+    margin-left: 70px;
+  }
+
+  .button-save {
+    margin-right: 300px;
+  }
+}

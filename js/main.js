@@ -1,4 +1,3 @@
-// global data
 function preview(event) {
   var photoUrl = event.target.value;
   $firstImage.setAttribute('src', photoUrl);
@@ -6,32 +5,16 @@ function preview(event) {
 
 function save(event) {
   event.preventDefault();
-
-  if (data.editing === null) {
-    var entryObject = {};
-    entryObject.entryId = data.nextEntryId;
-  } else {
-    var entryListElement = data.editing;
-
-    entryObject = getObject(entryListElement);
-  }
+  var entryObject = {};
+  entryObject.entryId = data.nextEntryId;
   entryObject.title = $submit.elements.title.value;
   entryObject.photoUrl = $submit.elements.photoUrl.value;
   entryObject.text = $submit.elements.notes.value;
-  var renderedEntry = entry(entryObject);
-  if (data.editing === null) {
-    $list.prepend(renderedEntry);
-    data.entries.unshift(entryObject);
-    data.nextEntryId += 1;
-  } else {
-    entryListElement.replaceWith(renderedEntry);
-  }
+  data.entries.unshift(entryObject);
+  $list.prepend(entry(entryObject));
+  data.nextEntryId += 1;
   $titleEntry.textContent = 'New Entry';
   onClick2();
-
-$photo.addEventListener('input', preview);
-function preview(event) {
-  $first.setAttribute('src', $photo.value);
 }
 
 // create dom tree
@@ -82,7 +65,6 @@ function contentLoad(event) {
     var renderedEntry = entry(data.entries[i]);
     $list.append(renderedEntry);
   }
-  return $list;
 }
 
 function onClick(event) {
@@ -101,36 +83,73 @@ function onClick2(event) {
 function createEntry(event) {
   $titleEntry.textContent = 'New Entry';
   $firstImage.setAttribute('src', 'images/placeholder-image-square.jpg');
+  $delete.className = 'delete visitibility-hidden';
   $submit.reset();
   onClick();
 }
 
-function editEntry(event) {
+function editEntry(event) { // assigns the clicked entry to the editing property of data
   if (event.target.tagName !== 'I') {
     return;
   }
-  onClick();
-  var entryListElement = event.target.closest('li');
-  data.editing = entryListElement;
-  var entryObject = getObject(entryListElement);
-
-  $submit.elements.title.value = entryObject.title;
-  $submit.elements.photoUrl.value = entryObject.photoUrl;
-  $firstImage.setAttribute('src', entryObject.photoUrl);
-  $submit.elements.notes.value = entryObject.text;
+  if (event.target && event.target.tagName === 'I') {
+    for (let i = 0; i < data.entries.length; i++) { // loop through data entries and find matching entry id
+      if (data.entries[i].entryId === parseInt(event.target.closest('li').getAttribute('data-entry-id'))) {
+        data.editing = data.entries[i];
+      }
+    }
+  } onClick();
   $titleEntry.textContent = 'Edit Entry';
-
+  $delete.className = 'delete visible';
+  $submit.elements.title.value = data.editing.title;
+  $submit.elements.photoUrl.value = data.editing.photoUrl;
+  $submit.elements.notes.value = data.editing.text;
+  $firstImage.setAttribute('src', data.editing.photoUrl);
 }
 
-function getObject(entryListElement) {
-  var entryId = entryListElement.getAttribute('data-entry-id');
-  for (var i = 0; i < data.entries.length; i++) {
-    if (parseInt(entryId) === data.entries[i].entryId) {
-      var entryObject = data.entries[i];
-      return entryObject;
-    }
+function handleEditSubmit(event) { // handles the submit event for editing an entry
+  event.preventDefault();
+  data.editing.title = $submit.elements.title.value;
+  data.editing.photoUrl = $submit.elements.photoUrl.value;
+  data.editing.text = $submit.elements.notes.value;
+  var $nodeToReplace = document.querySelector(`li[data-entry-id="${data.editing.entryId}"]`);
+  $nodeToReplace.replaceWith(entry(data.editing));
+  onClick2();
+  // data.editing = null;
+}
 
+function showModal(event) {
+  myModal.className = 'modal-content row justify-center';
+  modalBox.className = 'modal';
+}
+
+function hideModal(event) {
+
+  myModal.className = 'modal-content hidden row justify-center';
+  modalBox.className = 'modal hidden';
+  event.preventDefault();
+}
+
+function deleteConfirm(event) {
+
+  var entryDataId = data.editing.entryId;
+  var entryNodeList = document.querySelectorAll('.entry');
+
+  for (var i = 0; i < entryNodeList.length; i++) {
+    if (entryNodeList[i].getAttribute('data-entry-id') === entryDataId.toString()) {
+      entryNodeList[i].remove();
+    }
+    if (entryDataId === data.entries[i].entryId) {
+      data.entries.splice(i, 1);
+    }
   }
+  if (data.entries.length === 0) {
+    $paragraph.textContent = 'No entries have been recorded';
+  }
+  myModal.className = 'modal-content hidden row justify-center';
+  modalBox.className = 'modal hidden';
+  event.preventDefault();
+  onClick2();
 }
 
 var $firstImage = document.querySelector('.first-image');
@@ -144,7 +163,13 @@ var $list = document.querySelector('ul');
 var $paragraph = document.querySelector('.text-center');
 
 document.addEventListener('DOMContentLoaded', contentLoad);
-$submit.addEventListener('submit', save);
+$submit.addEventListener('submit', function (event) {
+  if (data.editing) {
+    return handleEditSubmit(event);
+  } else {
+    return save(event);
+  }
+});
 $list.addEventListener('click', editEntry);
 
 var $photo = document.querySelector('.photo');
@@ -154,82 +179,16 @@ $newButton.addEventListener('click', createEntry);
 var $entries = document.querySelector('.entry-link');
 $entries.addEventListener('click', onClick2);
 
-var $saveButton = document.querySelector('.button-save');
-$saveButton.addEventListener('click', save);
 var $titleEntry = document.querySelector('.entry-title');
 
-var $list = document.querySelector('[data-view="entries"] ul');
-var $paragraph = document.querySelector('.text-center');
+var $delete = document.querySelector('.delete');
 
-$submit.addEventListener('submit', event => {
-  event.preventDefault();
-  var obj = {
-    title: $name.value,
-    photo: $link.value,
-    text: $text.value,
-    entryId: data.nextEntryId
-  };
-  data.nextEntryId += 1;
-  data.entries.unshift(obj);
-  $first.setAttribute('src', 'images/placeholder-image-square.jpg');
-  $submit.reset();
-  $secondForm.className = 'second';
-  $firstForm.className = 'first hidden';
-  $list.prepend(entry(obj));
+var myModal = document.querySelector('.modal-content');
+var modalBox = document.querySelector('.modal');
+$delete.addEventListener('click', showModal);
 
-});
+var $cancelBtn = document.querySelector('.cancel');
+$cancelBtn.addEventListener('click', hideModal);
 
-// hide the 'entries' page and show the 'new entry' page
-var $newButton = document.querySelector('.new');
-var $firstForm = document.querySelector('.first');
-var $secondForm = document.querySelector('.second');
-$newButton.addEventListener('click', onClick);
-function onClick(event) {
-  $secondForm.className = 'second hidden';
-  $firstForm.className = 'first';
-  data.view = 'entry-form';
-}
-
-// show the 'entries' page and hide the 'new entry' page
-var $entries = document.querySelector('.entry-link');
-$entries.addEventListener('click', onClick2);
-function onClick2(event) {
-  $secondForm.className = 'second';
-  $firstForm.className = 'first hidden';
-  data.view = 'entries';
-}
-
-function contentLoad(event) {
-  for (var i = 0; i < data.entries.length; i++) {
-    var renderedEntry = entry(data.entries[i]);
-    $list.append(renderedEntry);
-  }
-  return $list;
-}
-
-// create dom tree
-function entry(object) {
-  var item = document.createElement('li');
-  var newContent = document.createElement('div');
-  var imageList = document.createElement('img');
-  var textContent = document.createElement('div');
-  var titleList = document.createElement('h2');
-  var textList = document.createElement('p');
-
-  imageList.setAttribute('src', object.photo);
-  titleList.textContent = object.title;
-  imageList.className = 'image-list col-3';
-  titleList.className = 'row';
-  textList.textContent = object.text;
-  textContent.append(titleList);
-  textContent.append(textList);
-  textContent.className = 'margin-text-entry col-2 col-2-second';
-  newContent.prepend(textContent);
-  newContent.prepend(imageList);
-  newContent.className = 'row';
-  item.prepend(newContent);
-  item.className = 'entry';
-  $paragraph.textContent = '';
-  return item;
-}
-document.addEventListener('DOMContentLoaded', contentLoad);
+var confirmBtn = document.querySelector('.confirm');
+confirmBtn.addEventListener('click', deleteConfirm);
